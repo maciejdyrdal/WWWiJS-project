@@ -1,4 +1,4 @@
-import { createBoard, playMove } from "./game.js";
+import { createBoard, PLAYER1, playMove } from "./game.js";
 
 function sendMoves(board, directions, attack, confirm, websocket) {
     const event = {
@@ -65,6 +65,14 @@ function receiveMoves(board, websocket) {
                 break;
             case "play":
                 playMove(board, event.player, event.column, event.row, event.direction, event.attack);
+                
+                const direction_to_display_1 = document.getElementById("current_direction_player1");
+                const direction_to_display_2 = document.getElementById("current_direction_player2");
+                if (event.player == PLAYER1) {
+                    direction_to_display_1.textContent = event.direction;
+                } else {
+                    direction_to_display_2.textContent = event.direction;
+                }
                 break;
             case "win":
                 showMessage(`Player ${event.player} wins!`);
