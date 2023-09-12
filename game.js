@@ -9,18 +9,20 @@ function createBoard(board) {
     linkElement.rel = "stylesheet";
     document.head.append(linkElement);
     // Generate board.
-    for (let column = 0; column < 4; column++) {
+    for (let column = 0; column < 6; column++) {
         const columnElement = document.createElement("div");
         columnElement.className = "column";
         columnElement.dataset.column = column;
-        for (let row = 0; row < 5; row++) {
+        for (let row = 0; row < 7; row++) {
             const cellElement = document.createElement("div");
-            if ((column == 0 && row >= 3) || (column == 3 && row <= 1) || (column == 1 && row == 1) || (column == 2 && row == 3)) {
+            if ((column == 1 && row >= 4) || (column == 4 && row <= 2) || (column == 2 && row == 2) || (column == 3 && row == 4)) {
                 cellElement.className = "cell forbidden";
-            } else if (column == 0 && row == 0) {
+            } else if (column == 1 && row == 1) {
                 cellElement.className = ("cell " + PLAYER1);
-            } else if (column == 3 && row == 4) {
+            } else if (column == 4 && row == 5) {
                 cellElement.className = ("cell " + PLAYER2);
+            } else if (column == 0 || column == 5 || row == 0 || row == 6) {
+                cellElement.className = "cell forbidden";
             } else {
                 cellElement.className = "cell empty";
             }

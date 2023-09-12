@@ -40,8 +40,8 @@ class Game:
     def __init__(self):
         self.moves = []
         self.winner = None
-        self.player1 = Player(0, 0, "north")
-        self.player2 = Player(3, 4, "south")
+        self.player1 = Player(1, 1, "north")
+        self.player2 = Player(4, 5, "south")
 
 
     @property
