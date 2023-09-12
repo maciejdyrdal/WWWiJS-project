@@ -83,7 +83,7 @@ class Game:
         if player == PLAYER2 and self.player1.column == column and self.player1.row == row:
             raise RuntimeError("This slot is full.")
         
-        if (column == 0 and row >= 3) or (column == 3 and row <= 1) or (column == 1 and row == 1) or (column == 2 and row == 3) or column < 0 or column > 3 or row < 0 or row > 4:
+        if (column == 1 and row >= 4) or (column == 4 and row <= 2) or (column == 2 and row == 2) or (column == 3 and row == 4) or column < 1 or column > 4 or row < 1 or row > 5:
             raise RuntimeError("Illegal move.")
 
         if direction not in DIRECTIONS:
