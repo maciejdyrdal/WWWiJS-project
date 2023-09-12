@@ -134,6 +134,7 @@ body {
 
 .empty {
     background-color: white;
+    background-image: url('png/path.png');
 }
 
 .forbidden {
@@ -148,11 +149,71 @@ body {
     background-color: white;
 }
 
+
 .red {
-    background-color: red;
+    background-image: url('png/dwarfRed.png');
 }
 
 .yellow {
-    background-color: yellow;
+    background-image: url('png/dwarfBlue.png');
 }
 
+.bottomLeft{
+    background-image: url('png/bottomLeft.png');
+}
+
+.bottomMid{
+    background-image: url('png/bottomMid.png');
+}
+
+.bottomRight{
+    background-image: url('png/bottomRight.png');
+}
+
+.justWall{
+    background-image: url('png/justWall.png');
+}
+
+.left{
+    background-image: url('png/right.png');
+}
+
+.path{
+    background-image: url('png/path.png');
+}
+
+.right{
+    background-image: url('png/left.png');
+}
+
+.topLeft{
+    background-image: url('png/topLeft.png');
+}
+
+.topMid{
+    background-image: url('png/topMid.png');
+}
+
+.topRight{
+    background-image: url('png/topRight.png');
+}
+
+.wallPillar{
+    background-image: url('png/wallPillar.png');
+}
+
+.x1{
+    background-image: url('png/X1.png');
+}
+
+.x2{
+    background-image: url('png/X2.png');
+}
+
+.x3{
+    background-image: url('png/X3.png');
+}
+
+.x4{
+    background-image: url('png/X4.png');
+}
