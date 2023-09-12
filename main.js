@@ -1,17 +1,55 @@
-import { createBoard, playMove } from "./connect4.js";
+import { createBoard, playMove } from "./game.js";
 
-function sendMoves(board, websocket) {
+function sendMoves(board, directions, attack, confirm, websocket) {
+    const event = {
+        type: "play",
+        column: "",
+        row: "",
+        direction: "",
+        attack: "",
+    };
+
     board.addEventListener("click", ({ target }) => {
         const column = target.dataset.column;
-        if (column === undefined) {
+        const row = target.dataset.row;
+        if (column === undefined || row === undefined) {
             return;
         }
-        const event = {
-            type: "play",
-            column: parseInt(column, 10),
-        };
-        websocket.send(JSON.stringify(event));
-      });
+        event.column = parseInt(column, 10);
+        event.row = parseInt(row, 10);
+        // For debugging:
+        console.log(event);
+    });
+    
+    directions.addEventListener("click", ({ target }) => {
+        const direction = target.dataset.direction;
+        if (direction === undefined) {
+            return;
+        }
+        event.direction = direction;
+        // For debugging:
+        console.log(event);
+    });
+    
+    attack.addEventListener("click", ({ target }) => {
+        const is_attacking = target.dataset.attack;
+        if (is_attacking === undefined) {
+            return;
+        }
+        event.attack = is_attacking;
+        // For debugging:
+        console.log(event);
+    });
+
+    confirm.addEventListener("click", ({ target }) => {
+        if (event.column === undefined || event.row === undefined || event.direction === undefined || event.attack === undefined) {
+            showMessage("Incomplete move.")
+        } else {
+            websocket.send(JSON.stringify(event));
+        }        
+        // For debugging:
+        console.log(event);
+    })
 }
 
 function showMessage(message) {
@@ -26,7 +64,7 @@ function receiveMoves(board, websocket) {
                 document.querySelector(".join").href = "?join=" + event.join;
                 break;
             case "play":
-                playMove(board, event.player, event.column, event.row);
+                playMove(board, event.player, event.column, event.row, event.direction, event.attack);
                 break;
             case "win":
                 showMessage(`Player ${event.player} wins!`);
@@ -49,6 +87,7 @@ function initGame(websocket) {
             event.join = params.get("join");
         } else {
 
+
         }
 
         websocket.send(JSON.stringify(event));
@@ -59,8 +98,11 @@ window.addEventListener("DOMContentLoaded", () => {
     const board = document.querySelector(".board");
     createBoard(board);
 
+    const directions = document.querySelector(".directions");
+    const attack = document.querySelector(".attack");
     const websocket = new WebSocket("ws://localhost:8001/");
+    const confirm = document.querySelector(".confirm");
     initGame(websocket);
     receiveMoves(board, websocket);
-    sendMoves(board, websocket);
+    sendMoves(board, directions, attack, confirm, websocket);
 });

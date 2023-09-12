@@ -7,6 +7,17 @@
         <div class="actions">
             <a class="action new" href="/">New</a>
             <a class="action join" href="">Join</a>
+            <div class="attack">
+                <button class="is_attacking choose_attack" type="button" data-attack="attack">Attack</button>
+                <button class="is_attacking choose_no_attack" type="button" data-attack="dont_attack">Don't attack</button>
+            </div>
+            <div class="directions">
+                <button class="choose_direction choose_north" type="button" data-direction="north">North</button>
+                <button class="choose_direction choose_east" type="button" data-direction="east">East</button>
+                <button class="choose_direction choose_south" type="button" data-direction="south">South</button>
+                <button class="choose_direction choose_west" type="button" data-direction="west">West</button>
+            </div>
+            <button class="action confirm" type="button">Confirm move</button>
         </div>
         <div class="board"></div>
         <script src="main.js" type="module"></script>

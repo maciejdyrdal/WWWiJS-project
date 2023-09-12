@@ -1,12 +1,10 @@
 import asyncio
 import json
-import os
 import secrets
-import signal
 
 import websockets
 
-from connect4 import PLAYER1, PLAYER2, Connect4
+from game import PLAYER1, PLAYER2, Game
 
 
 JOIN = {}
@@ -21,12 +19,15 @@ async def error(websocket, message):
 
 
 async def replay(websocket, game):
-    for player, column, row in game.moves.copy():
+    for player, column, row, direction, attack in game.moves.copy():
         event = {
             "type": "play",
             "player": player,
             "column": column,
             "row": row,
+            "direction": direction,
+            "attack": attack,
+
         }
         await websocket.send(json.dumps(event))
 
@@ -36,9 +37,12 @@ async def play(websocket, game, player, connected):
         event = json.loads(message)
         assert event["type"] == "play"
         column = event["column"]
+        row = event["row"]
+        direction = event["direction"]
+        attack = event["attack"]
 
         try:
-            row = game.play(player, column)
+            new_column, new_row, new_direction, new_attack = game.play(player, int(column), int(row), direction, attack)
         except RuntimeError as exc:
             await error(websocket, str(exc))
             continue
@@ -46,8 +50,10 @@ async def play(websocket, game, player, connected):
         event = {
             "type": "play",
             "player": player,
-            "column": column,
-            "row": row,
+            "column": new_column,
+            "row": new_row,
+            "direction": new_direction,
+            "attack": new_attack,
         }
         websockets.broadcast(connected, json.dumps(event))
 
@@ -60,7 +66,7 @@ async def play(websocket, game, player, connected):
 
 
 async def start(websocket):
-    game = Connect4()
+    game = Game()
     connected = {websocket}
 
     join_key = secrets.token_urlsafe(12)
@@ -104,13 +110,8 @@ async def handler(websocket):
 
 
 async def main():
-    loop = asyncio.get_running_loop()
-    stop = loop.create_future()
-    loop.add_signal_handler(signal.SIGTERM, stop.set_result, None)
-
-    port = int(os.environ.get("PORT", "8001"))
-    async with websockets.serve(handler, "", port):
-        await stop
+    async with websockets.serve(handler, "", 8001):
+        await asyncio.Future()
 
 
 if __name__ == "__main__":
